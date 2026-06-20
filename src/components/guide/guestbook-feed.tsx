@@ -7,8 +7,13 @@ import { DEMO_CONTRACT_ADDRESS } from "@/lib/chain";
 import { GUESTBOOK_ABI, type GuestMessage } from "@/lib/guestbook";
 import { shorten } from "@/lib/utils";
 
-/** 只读展示链上留言板的最新留言。合约未部署时显示占位说明。 */
-export function GuestbookFeed() {
+/** 只读展示链上留言板的最新留言。合约未部署时显示占位说明。
+ *  refreshSignal 变化时会重新拉取（用于提交留言后刷新）。 */
+export function GuestbookFeed({
+  refreshSignal = 0,
+}: {
+  refreshSignal?: number;
+}) {
   const [messages, setMessages] = useState<GuestMessage[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -36,7 +41,7 @@ export function GuestbookFeed() {
   useEffect(() => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [refreshSignal]);
 
   if (!configured) {
     return (

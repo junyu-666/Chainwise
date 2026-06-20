@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ShieldCheck } from "lucide-react";
+import { ConnectButton } from "@/components/wallet/connect-button";
 
 const NAV = [
   { label: "新手路径", href: "/#path" },
@@ -15,17 +16,20 @@ export function SiteHeader() {
           <ShieldCheck className="h-5 w-5 text-teal-600" />
           <span>Chainwise</span>
         </Link>
-        <nav className="flex items-center gap-1 text-sm">
-          {NAV.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="rounded-md px-3 py-1.5 text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <div className="flex items-center gap-2">
+          <nav className="hidden items-center gap-1 text-sm sm:flex">
+            {NAV.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="rounded-md px-3 py-1.5 text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+          <ConnectButton size="sm" />
+        </div>
       </div>
     </header>
   );
