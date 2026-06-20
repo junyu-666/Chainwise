@@ -1,0 +1,22 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model UserProgress {
+  id             String   @id @default(cuid())
+  anonymousId    String   @unique
+  walletAddress  String?
+  currentStep    String   @default("learn")
+  completedSteps String[]
+  quizResults    Json     @default("{}")
+  testnetTasks   Json     @default("{}")
+  lastSeenAt     DateTime @default(now()) @updatedAt
+  createdAt      DateTime @default(now())
+
+  @@index([walletAddress])
+}
