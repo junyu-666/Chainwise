@@ -15,24 +15,39 @@ export const BNB_TESTNET = {
 export const DEMO_CONTRACT_ADDRESS =
   process.env.NEXT_PUBLIC_DEMO_CONTRACT_ADDRESS ?? "";
 
-/** 推荐的零门槛水龙头入口，按优先级排列。 */
-export const FAUCETS = [
+/**
+ * barrier 字段说明领取门槛：
+ *   "none"        — 只需粘贴地址，无任何链上余额要求
+ *   "mainnet-bnb" — 需要 BSC 主网钱包持有一定 BNB
+ *   "mainnet-eth" — 需要以太坊主网钱包持有一定 ETH
+ */
+export type FaucetBarrier = "none" | "mainnet-bnb" | "mainnet-eth";
+
+export const FAUCETS: readonly {
+  name: string;
+  url: string;
+  note: string;
+  barrier: FaucetBarrier;
+}[] = [
+  {
+    name: "BitBond 水龙头",
+    url: "https://tokentool.bitbond.com/faucet/bsc-testnet",
+    note: "粘贴地址即领，0.01 tBNB / 24 小时，无主网余额要求",
+    barrier: "none",
+  },
   {
     name: "BNB Chain 官方水龙头",
     url: "https://www.bnbchain.org/en/testnet-faucet",
-    note: "仅需填写钱包地址，无主网余额要求",
-  },
-  {
-    name: "Bitbond 水龙头",
-    url: "https://tokentool.bitbond.com/faucet/bsc-testnet",
-    note: "备选，仅需填写钱包地址",
+    note: "每次领 0.3 tBNB，但需要 BSC 主网钱包持有 ≥0.002 BNB",
+    barrier: "mainnet-bnb",
   },
   {
     name: "QuickNode 水龙头",
     url: "https://faucet.quicknode.com/binance-smart-chain/bnb-testnet",
-    note: "备选，仅需填写钱包地址",
+    note: "每 12 小时可领一次，但需要以太坊主网持有 ≥0.001 ETH",
+    barrier: "mainnet-eth",
   },
-] as const;
+];
 
 /** 拼接区块浏览器的交易 / 地址 / 合约链接。 */
 export function explorerTxUrl(hash: string): string {
